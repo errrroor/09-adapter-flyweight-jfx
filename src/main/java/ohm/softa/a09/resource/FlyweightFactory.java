@@ -11,10 +11,10 @@ import java.util.function.Supplier;
 
 public class FlyweightFactory {
 	private Map<String, Image> flyweights = new HashMap<>();
-	private final ResourceLoader<Image> imageResourceLoader;
+	private final FxImageLoaderAdapter imageResourceLoader;
 
 	public FlyweightFactory(){
-		imageResourceLoader = new ResourceLoader<>(Image::new);
+		imageResourceLoader = new FxImageLoaderAdapter();
 	}
 	public Image getFlyweight(String path) throws URISyntaxException, IOException {
 		if (flyweights.containsKey(path))
@@ -22,7 +22,7 @@ public class FlyweightFactory {
 
 		// allocate new flyweight
 
-		flyweights.put(path, imageResourceLoader.loadResource(ClassLoader.getSystemClassLoader(), path));
+		flyweights.put(path, imageResourceLoader.loadImage(path));
 		return flyweights.get(path);
 	}
 }
